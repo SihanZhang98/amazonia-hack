@@ -1,3 +1,10 @@
+var myData=
+
+[
+    {"coordinates_dms":"5\u00b0 41' 26\" S, 57\u00b0 3' 49\" W","description":"Operation ABC","file_url":"https://amazoniahack.s3.amazonaws.com/PHOTO-2023-10-13-14-52-20.jpg","filename":"PHOTO-2023-10-13-14-52-20.jpg","id":75,"picture_date":"2023-08-12","picture_time":"13:33:59","upload_date":"2023-11-19","upload_time":"14:21:46.305222"},
+    {"coordinates_dms":"5\u00b0 16' 30\" S, 57\u00b0 32' 4\" W","description":"Operation ABC","file_url":"https://amazoniahack.s3.amazonaws.com/PHOTO-2023-10-13-14-52-20_3.jpg","filename":"PHOTO-2023-10-13-14-52-20_3.jpg","id":76,"picture_date":"2023-08-13","picture_time":"11:15:30","upload_date":"2023-11-19","upload_time":"14:21:49.782815"},
+    {"coordinates_dms":"5\u00b0 16' 30'' S, 57\u00b0 32' 5'' W","description":"Operation ABC","file_url":"https://amazoniahack.s3.amazonaws.com/PHOTO-2023-10-13-14-52-20_2.jpg","filename":"PHOTO-2023-10-13-14-52-20_2.jpg","id":77,"picture_date":"2023-08-13","picture_time":"11:07:06","upload_date":"2023-11-19","upload_time":"14:21:53.305918"}
+  ];
 
 const map=L.map('map').setView([-5.016389,-56.615833],9);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -7,35 +14,19 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 const customIcon=L.icon({iconUrl: 'icon-1.png', iconSize:[40,40]})
 
-
-var data;
-const uploadsuccess=document.getElementById("uploadsuccess").
-    addEventListener("click", () => {
-        Papa.parse(document.getElementById('UploadFile').files[0], {
-            delimiter: ",",
-            download: true,
-            header: true,
-            skipEmptyLines: true,
-            complete: function (results) {
-                console.log("hi");
-                data = results.data;
-                console.log(data);
-                for(item of data){
-                    var newCoord=convertCoordinates(item.coordinates);
-                    console.log(newCoord);
+for(item of myData){
+    var newCoord=convertCoordinates(item.coordinates_dms);
+    console.log(newCoord);
 
 
-                    var content=`<img src="images/1.jpg"><br><h1>${item.description}</h1><p>Date: ${item.date}<br> Time: ${item.time} <br>Location:  ${item.coordinates} </p>`
-                    console.log(content);
+    var content=`<img src=${item.file_url}><br><h1>${item.description}</h1><p>Date: ${item.picture_date}<br> Time: ${item.picture_time} <br>Location:  ${item.coordinates_dms} </p>`
+    console.log(content);
 
-                    
-               
-                    L.marker(newCoord,{icon: customIcon}).addTo(map)
-                   .bindPopup(content,{offset:[0,-19]});
-                }
-            }
-        });
-    });
+    
+
+    L.marker(newCoord,{icon: customIcon}).addTo(map)
+   .bindPopup(content,{offset:[0,-19]});
+}
 
 function convertCoordinates(coord){
     coord=coord.split(/[\'\"°,]/);
@@ -56,6 +47,3 @@ function convertCoordinates(coord){
 
 
 
-
-// L.marker([-5.016389,-56.615833],{icon: customIcon}).addTo(map)
-//     .bindPopup('<img src="images/1.jpg"><br><h1>Fire in Forest</h1><p>Date: 2023/8/12<br> Time: 13:33 <br>Location: 5°41‘26\'\'S,57°3\'49\'\'W</p>',{offset:[0,-19]});
